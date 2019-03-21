@@ -1,0 +1,21 @@
+<!-- {<!DOCTYPE html>
+<html>
+    <head>
+        <title>Books!</title>
+    </head>}
+
+    <body>
+        <h1>{{headline}}</h1>
+        <a href="{{ url_for('login')}}">Log in</a>
+    </body>
+</html> -->
+
+{% extends "layout.html" %}
+
+{% block heading %}
+    {{headline}}
+{% endblock %}
+
+{% block body %}
+    <a href="{{ url_for('login')}}">Log in</a>
+{% endblock %}
