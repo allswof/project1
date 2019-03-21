@@ -25,3 +25,13 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     headline="Register"
     return render_template("index.html", headline=headline)
+
+@app.route("/login")
+def login():
+    headline="Log in"
+    return render_template("login.html", headline=headline)
+
+@app.route("/logoff")
+def logoff():
+    headline="Good bye!"
+    return render_template("logoff.html", headline=headline)
