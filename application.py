@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, request
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -35,3 +35,11 @@ def login():
 def logoff():
     headline="Good bye!"
     return render_template("logoff.html", headline=headline)
+
+@app.route("/register", methods="POST")
+def register():
+    name = request.form.get("name")
+    email = request.form.get("email")
+    password = reques.form.get(password)
+
+
