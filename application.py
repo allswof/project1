@@ -36,10 +36,10 @@ def logoff():
     headline="Good bye!"
     return render_template("logoff.html", headline=headline)
 
-@app.route("/register", methods="POST")
+@app.route("/register")
 def register():
     name = request.form.get("name")
     email = request.form.get("email")
-    password = reques.form.get(password)
+    password = request.form.get(password)
 
 
