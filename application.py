@@ -23,8 +23,9 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    headline="Register"
+    headline="Welcome to the world of books!"
     return render_template("index.html", headline=headline)
+    
 
 @app.route("/login")
 def login():
@@ -36,10 +37,26 @@ def logoff():
     headline="Good bye!"
     return render_template("logoff.html", headline=headline)
 
-@app.route("/register")
+@app.route("/register", methods=["POST"])
 def register():
-    name = request.form.get("name")
-    email = request.form.get("email")
-    password = request.form.get(password)
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
 
+    # if the username is available it adds it to the db
+    if db.execute("SELECT * FROM users WHERE user_name = :name", {"name":name}).rowcount == 0:
+        db.execute("INSERT INTO users (user_name, email, password) VALUES (:name, :email, :password)",
+              {"name":name, "email":email, "password":password})
+        db.commit()
+        headline="Search"
+        return render_template("search.html", headline=headline)
+    else:
+        headline="User name already taken"
+        return render_template("index.html", headline=headline)
+
+@app.route("/search")
+def search():
+    headline="Search"
+    return render_template("search.html", headline=headline)
 
