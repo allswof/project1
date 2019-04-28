@@ -55,19 +55,25 @@ def register():
         headline="User name already taken, please chose a different one"
         return render_template("index.html", headline=headline)
 
-@app.route("/search")
+@app.route("/search", methods=["POST"])
 def search():
 
-    if request.method == "POST":
-        author =  request.form.get("author")
-        title = request.form.get("title")
-        isbn = request.form.get("isbn")
+    author =  request.form.get("author")
+    title = request.form.get("title")
+    isbn = request.form.get("isbn")
+
+    #return f"author = {author}, title = {title} and isbn = {isbn}"
 
     # Searches the database
-    if author != None:
+    if author != "":
         # books = db.execute("SELECT * FROM books WHERE author LIKE :author", {"author": ('%' + author + '%')}).fetchall()
-        books = db.execute("SELECT author, title FROM books WHERE author LIKE :author GROUPED BY author", {"author": ('%' + author + '%')}).fetchall()
-
+        books = db.execute("SELECT author, title FROM books WHERE author LIKE :author and title LIKE :title order BY author, title", {"author": ('%' + author + '%'), "title": ('%' + title + '%')}).fetchall()
+    elif title !="":
+        books = db.execute("SELECT title, author FROM books WHERE title LIKE :title and author LIKE :author order BY title, author", {"title": ('%' + title + '%'), "author": ('%' + author + '%')}).fetchall()
+    elif isbn !="":
+        books = db.execute("SELECT isbn, author, title FROM books WHERE isbn = :isbn", {"isbn": isbn})
+    else:
+        books = db.execute("SELECT * FROM books")
 
     headline="Results"
     return render_template("results.html", headline=headline, books=books)
