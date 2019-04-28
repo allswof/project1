@@ -49,14 +49,27 @@ def register():
         db.execute("INSERT INTO users (user_name, email, password) VALUES (:name, :email, :password)",
               {"name":name, "email":email, "password":password})
         db.commit()
-        headline="Search"
-        return render_template("search.html", headline=headline)
+        headline="Welcome"
+        return render_template("search.html", headline=headline, name=name)
     else:
-        headline="User name already taken"
+        headline="User name already taken, please chose a different one"
         return render_template("index.html", headline=headline)
 
 @app.route("/search")
 def search():
-    headline="Search"
-    return render_template("search.html", headline=headline)
+
+    if request.method == "POST":
+        author =  request.form.get("author")
+        title = request.form.get("title")
+        isbn = request.form.get("isbn")
+
+    # Searches the database
+    if author != None:
+        # books = db.execute("SELECT * FROM books WHERE author LIKE :author", {"author": ('%' + author + '%')}).fetchall()
+        books = db.execute("SELECT author, title FROM books WHERE author LIKE :author GROUPED BY author", {"author": ('%' + author + '%')}).fetchall()
+
+
+    headline="Results"
+    return render_template("results.html", headline=headline, books=books)
+
 
