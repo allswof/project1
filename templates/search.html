@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    {{headline}}
+{% endblock %}
+
+{% block body %}
+
+    <h2>Hello {{name}}</h2>
+
+    <form action="{{ url_for('search')}}" method = "POST">
+        <input type="text" name="author" placeholder="Search by author">
+        <input type="text" name="title" placeholder="Search by title">
+        <input type="text" name="isbn" placeholder="Search by isbn number">
+        <button>Submit</button>
+    </form>
+
+    <a href="{{ url_for('logoff')}}">Log off</a>
+{% endblock %}

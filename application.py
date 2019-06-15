@@ -73,7 +73,7 @@ def search():
     elif isbn !="":
         books = db.execute("SELECT isbn, author, title FROM books WHERE isbn = :isbn", {"isbn": isbn})
     else:
-        books = db.execute("SELECT * FROM books")
+        books = db.execute("SELECT author, title, year, isbn FROM books order by author, title")
 
     headline="Results"
     return render_template("results.html", headline=headline, books=books)
